@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hospital CRUD</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial;
+    }
+    input, button {
+      margin: 5px;
+    }
+    button {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Hospital Patients</h2>
+
+  <h3>Add Patient</h3>
+  Name: <input id="name">
+  Age: <input id="age" type="number">
+  Gender: <input id="gender">
+  Disease: <input id="disease">
+  <button onclick="add()">Add</button>
+
+  <h3>All Patients</h3>
+  <button onclick="get()">Load</button>
+  <div id="output"></div>
+
+  <script>
+    const url = 'http://localhost:8080/patients';
+
+    function get() {
+      fetch(url)
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById('output').innerHTML = data.map(p =>
+            `${p.id}: ${p.name}, ${p.age}, ${p.gender}, ${p.disease} 
+            <button onclick="del(${p.id})">Delete</button>`
+          ).join('<br>');
+        });
+    }
+
+    function add() {
+      const name = document.getElementById('name').value;
+      const age = Number(document.getElementById('age').value);
+      const gender = document.getElementById('gender').value;
+      const disease = document.getElementById('disease').value;
+
+      fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name, age, gender, disease})
+      })
+      .then(() => {
+        get();
+        document.getElementById('name').value = "";
+        document.getElementById('age').value = "";
+        document.getElementById('gender').value = "";
+        document.getElementById('disease').value = "";
+      });
+    }
+
+    function del(id) {
+      fetch(`${url}/${id}`, { method: 'DELETE' })
+        .then(() => get());
+    }
+  </script>
+
+</body>
+</html>

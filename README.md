@@ -44,6 +44,6 @@ cd hospital-crud
 ### 3. Create Database 
 CREATE DATABASE hospitaldbb;
 
-![Alt Text](CRUD%20API/images/image.png)
+![Alt Text](CRUD%20API/images/image1.png)
 ![Alt Text](CRUD%20API/images/image2.png)
 ![Alt Text](CRUD%20API/images/image3.png)
